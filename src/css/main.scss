@@ -1,0 +1,18 @@
+/* remember to use ~ when importing from node_modules/xxx packages  */
+
+/*    npm install --save font-awesome           */
+$fa-font-path: "~font-awesome/fonts";
+@import '~font-awesome/scss/font-awesome.scss';
+
+/*    npm install --save jquery/jquery-ui       */
+// @import '~jquery-ui/themes/base/all.css';
+
+@import 'simple'; // to failback if no bootstrap installed
+
+/*    npm install --save jquery popper.js bootstrap      */
+// @import "~bootstrap/scss/bootstrap";
+
+body {
+  background:#353535;color:white;font-family: sans-serif;
+  font-size:1.17em;
+}
