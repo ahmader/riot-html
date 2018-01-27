@@ -25,16 +25,7 @@ context.keys().forEach(key => {
 import './css/main.scss';
 /* Optional style files can be DIRECTLY imported in the main.scss */
 
-
-/* if you install jquery library, then jQuery variable will be defined */
-/*  npm install --save jquery */
-if (typeof jQuery != 'undefined') {
-  global.jQuery = global.jquery = global.$ = jQuery; // this will transpile to window.$
-}
-
-
 console.log('entryjs.start!', APPVERSION);
-
 
 riot.mount('app', {
   version: APPVERSION

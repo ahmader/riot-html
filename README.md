@@ -28,7 +28,7 @@ Optional Support:
 ## Get the kit
 
 ```
-$ git clone git@github.com:ahmader/riotjs-html.git && cd riotjs-html
+$ git clone https://github.com/ahmader/riot-html.git && cd riot-html
 ```
 
 
@@ -83,6 +83,13 @@ To Define global variable with webpack check this
 Also jQuery is available everywhere, only after you installed it.
 ```
 npm install --save jquery
+```
+if you want window.$ to be available then add this code to `entry.js`
+```js
+if (typeof jQuery != 'undefined') {
+  // webpack will transpile global. to window.
+  global.jQuery = global.jquery = global.$ = jQuery;
+}
 ```
 
 For jquery-ui you can use `jquery-ui` official npm whereby you include what you need to use. (*recommended for size*)

@@ -31,8 +31,7 @@
             if (self.age<=0) {
               return self.removeChild();
             }
-            console.log('aging...?');
-            // self.refs.age.innerHTML=self.age;
+            // console.log('aging...?');
             self.update();
           }, 1000);
         }

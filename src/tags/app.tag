@@ -49,9 +49,7 @@
     RiotControl.addStore(familyStore);
     
     import {defaultSettings} from '../js/main.js';
-    self.loading=1;
-    // self.family = false; // init the family with empty; this prevent the error of calling this.family.father before app_init
-    
+    self.loading=5; // fake loading
     
     // console.log('app.tag>>>>>start', APPVERSION);
     
@@ -60,7 +58,7 @@
         
         var intervalId = setInterval(function() {
             self.loading--;
-            console.log('loopp');
+            // console.log('fake_loading', self.loading);
             if (self.loading==0) {
               clearInterval(intervalId);
               var family = {
