@@ -1,0 +1,45 @@
+
+@mixin gender--male() {
+  border-style:solid; 
+  border-color:blue; 
+  border-width: 3px; 
+}
+@mixin gender--female() {
+  border: 1px solid red;
+}
+
+family {
+  font-size:1.17em;
+  line-height: 2em;
+  input {
+    font-size:1.17em;
+  }
+  .father {
+    color: white;
+    background: blue;
+    @include gender--male();
+  }
+  .mother {
+    color: white;
+    background: red;
+    @include gender--female();
+  } 
+  .child {
+    background:orange;
+    border-style:solid; 
+    border-color: gray;
+    border-width: 5px !important;
+  }
+  .child[gender=male] {
+    @include gender--male();
+    input {
+      background:lightblue;
+    }
+  }
+  .child[gender=female] {
+    @include gender--female();
+    input {
+      background:pink;
+    }
+  }
+}

@@ -13,6 +13,27 @@ $fa-font-path: "~font-awesome/fonts";
 // @import "~bootstrap/scss/bootstrap";
 
 body {
-  background:#353535;color:white;font-family: sans-serif;
+  background:#353535;color:white;font-family: verdana;
   font-size:1.17em;
+}
+
+a {color:teal;text-decoration: none;}
+a:hover {color:#801600;text-decoration: underline;;}
+
+nav {margin:20px;}
+
+nav a {
+  font-size:1em;
+  color:white;
+  text-decoration: none;
+  margin-right:10px;
+}
+
+nav a:hover {
+  color:red;
+  text-decoration: underline;;
+}
+
+.svgbg {
+  background-image: url('../img/logo.svg');
 }

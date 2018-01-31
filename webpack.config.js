@@ -4,7 +4,11 @@ var commonConfig = require('./webpack.config.common');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var extractCSS = new ExtractTextPlugin('css/style.css');
+const extractSass = new ExtractTextPlugin({
+  // filename: "css/[name].[contenthash].css",
+  filename: "css/style.css",
+  disable: process.env.NODE_ENV === "development"
+});
 
 var output = {
   path: path.resolve(__dirname, 'public'),
@@ -17,21 +21,21 @@ module.exports = Object.assign(commonConfig, {
   module: {
     rules: commonConfig.module.rules.concat([{
     test: /\.s?css$/,
-      use: extractCSS.extract({
-        fallback: "style-loader", 
+      use: extractSass.extract({
         use: [ {
           loader: "css-loader",
           options: { minimize: true }
         }, {
           loader: 'sass-loader',
           options: { minimize: true }
-        } ]
+        } ],
+        fallback: "style-loader", 
       })
     }])
   },
   plugins: commonConfig.plugins.concat([
     new CleanWebpackPlugin('public'),
-    extractCSS,
+    extractSass,
     new webpack.LoaderOptionsPlugin({debug: true}),
     new webpack.optimize.CommonsChunkPlugin('vendor'),
     // new webpack.optimize.DedupePlugin(),

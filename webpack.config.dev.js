@@ -2,7 +2,11 @@ const webpack = require('webpack');
 var path = require('path');
 var commonConfig = require('./webpack.config.common');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var extractCSS = new ExtractTextPlugin('css/style.css');
+const extractSass = new ExtractTextPlugin({
+  // filename: "css/[name].[contenthash].css",
+  filename: "css/style.css",
+  disable: process.env.NODE_ENV === "development"
+});
 
 var output = {
   path: path.resolve(__dirname, 'public'),
@@ -16,7 +20,7 @@ module.exports = Object.assign(commonConfig, {
   module: {
     rules: commonConfig.module.rules.concat([{
       test: /\.s?css$/,
-      use: extractCSS.extract({
+      use: extractSass.extract({
         fallback: "style-loader", 
         use: [{
           loader: "css-loader",
@@ -36,7 +40,7 @@ module.exports = Object.assign(commonConfig, {
   },
   plugins: commonConfig.plugins.concat([
     new webpack.LoaderOptionsPlugin({debug: true}),
-    extractCSS
+    extractSass
   ]),
   devServer: {
     host: "0.0.0.0",

@@ -27,12 +27,26 @@ module.exports = {
   module: {
     
     rules: [{
-      test: /\.js?$/,
-      // exclude: path.resolve(__dirname, './node_modules'),
-      exclude: /node_modules/,
-      use: 'babel-loader'
+      test: /\.tag$/,
+      loader: 'riot-tag-loader',
+      enforce: 'pre',  
+      query: {
+        type: 'es6', // transpile the riot tags using babel
+        sourceMap: true
+      }
     },{
-      test: /\.(jpe?g|png|gif)$/,
+      test: /\.(js|tag)?$/,
+      exclude: /node_modules/,
+      use: {
+        loader: 'babel-loader',
+        query: {
+          plugins: ['transform-runtime', "external-helpers-2"],
+          presets: ['es2015', "es2015-riot", "stage-0", "stage-2"]
+        }
+      },
+    },{
+      test: /\.(jpe?g|png|gif|svg|ttf|eot|woff|woff2)$/,
+      exclude: /font\.(ttf|eot|svg|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
       use: [{
         loader: 'url-loader?limit=10000',
         options: {
@@ -41,55 +55,15 @@ module.exports = {
         }
       }]
     },{
-      test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-      use: [{
-        loader: 'url-loader?limit=10000&mimetype=application/font-woff',
-        options: {
-          useRelativePath: true,
-          // name: '[hash].[ext]',
-          outputPath: 'fonts'
-        }
-      }]
-    },{
-      test: /fontawesome-webfont\.(ttf|eot|svg|woff)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+      test: /font\.(ttf|eot|svg|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
       use: [{
         loader: 'file-loader',
         options: {
-          useRelativePath: true,
-          // name: '[hash].[ext]',
-          outputPath: 'fonts'
+          // useRelativePath: true,
+          publicPath: '/',
+          outputPath: 'fonts/'
         }
       }]
-    },{
-      test: /\.(ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-      use: [{
-        loader: 'file-loader',
-        options: {
-          useRelativePath: true,
-          // name: '[hash].[ext]',
-          outputPath: 'fonts'
-        }
-      }]
-    },{
-      test: /\.(svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-      use: [{
-        loader: 'raw-loader',
-        options: {
-          outputPath: 'img/'
-        }
-      }]
-    },{
-      test: /\.tag$/,
-      exclude: /node_modules/,
-      use: [{
-        loader: 'riot-tag-loader',
-        query: {
-          type: 'es6', // transpile the riot tags using babel
-          attrs: ['img:src', 'img:data-src', 'link:href'],
-          sourceMap: true
-        }
-      }]
-      
     }]
   },
   node: {
@@ -116,12 +90,18 @@ module.exports = {
     new webpack.ProvidePlugin({
       RiotControl: 'riotcontrol',
     }),
+    new webpack.ProvidePlugin({
+      RiotRoute: 'riot-route',
+    }),
     new webpack.DefinePlugin({
       'APPVERSION':  JSON.stringify(pkg.version)
     }),
   ].concat(morePlugins),
   resolve: { 
     alias: {
+      Stores: path.join(__dirname, "src", "stores"),
+      Javascripts: path.join(__dirname, "src", "js"),
+      Images: path.join(__dirname, "src", "img"),
       // bind version of jquery-ui incase if used jquery-ui-dist *only if we want to add all jquery-ui.
       // 'jquery-ui': 'jquery-ui-dist/jquery-ui.js',
       // bind to modules;

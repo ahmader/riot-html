@@ -2,12 +2,12 @@
   <div>
     
     <div>
-      Child # { this.indexChild } : <input ref="name" class="" name="childName" value="{child.name}" onchange={changeName} oninput={changeName} > 
+      Child # { this.indexChild+1 } : <input ref="name" class="" name="childName" value="{child.name}" onchange={changeName} oninput={changeName} > 
       <select ref="gender" class="" name="childGender" onchange={changeGender}>
         <option value="" show={!child.gender}></option>
         <option each={gender in this.parent.genders} value={gender} selected={gender==child.gender}>{gender}</option>
       </select>
-      child Of: <span class="father">{parent.family.father}</span> and <span class="mother">{parent.family.mother}</span>
+      child Of: <span class="father">{myParentFamily.father}</span> and <span class="mother">{myParentFamily.mother}</span>
       (<span ref="age">{this.age}</span>)
       <button type="button" name="button" onclick={removeChild}><i class="fa fa-close"></i> remove</button>
     </div>
@@ -17,8 +17,14 @@
   </style>
   <script type="text/javascript">
     var self=this;
-    // console.log('child.tag>>>>>start', self.indexChild, self.child);
-    self.showAlpha = true;
+    
+    import {familyStore} from './js/familystore.js';
+    let myStore = familyStore;
+    self.myParentFamily = myStore.family;
+    
+    // import {myFamily} from './js/family.js';
+    // self.myParentFamily = myFamily.family;
+    
     self.age=self.child.age || 'sticky';
     
     
@@ -31,7 +37,7 @@
             if (self.age<=0) {
               return self.removeChild();
             }
-            // console.log('aging...?');
+            console.log('aging...?');
             self.update();
           }, 1000);
         }
@@ -41,24 +47,24 @@
         console.log('child.tag>>>>>unmounted', self.indexChild, self.child);
         clearInterval(self.interval);
     });
+    myStore.on('family_changed', (updateFamily) => {
+      self.myParentFamily = updateFamily;
+      self.update();
+    });
+    
     self.changeName = (e) => {
       self.child.name=e.target.value;
       self.updateChild();
     }
     self.changeGender = (e) => {
-      // RiotControl.trigger('child_update_gender', self.indexChild, e.target.value);
       self.child.gender=e.target.value;
       self.updateChild();
     }
     self.removeChild = () => {
-      RiotControl.trigger('child_remove', self.indexChild);
+      myStore.trigger('child_remove', self.indexChild);
     }
     self.updateChild = () => {
-      RiotControl.trigger('child_update', self.indexChild, self.child);
-    }
-    
-    self.selectColor = (c) => {
-      console.log('selectColor', c);
+      myStore.trigger('child_update', self.indexChild, self.child);
     }
     
     // console.log('child.tag>>>>>done');

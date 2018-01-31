@@ -1,17 +1,27 @@
+// https://k94n.com/es6-modules-single-instance-pattern
 // FamilyStore definition.
 // Flux stores house application logic and state that relate to a specific domain.
 // In this case, a list of family members.
-export default function FamilyStore() {
+export let familyStore = new FamilyStore();
+export function FamilyStore() {
   if (!(this instanceof FamilyStore)) return new FamilyStore()
   
   riot.observable(this) // Riot provides our event emitter.
   
-  var self = this
+  const self = this
+  
+  self.intervalId=null;
 
   self.family = {
-    father: 'Bob',
-    mother: null,
-    children: []
+    father:'Mike',
+    mother: 'Alice',
+    children: [{
+      name: 'John',
+      gender: 'male'
+    },{
+      name: 'Sara',
+      gender: 'female'
+    }]
   };
 
 
@@ -20,14 +30,33 @@ export default function FamilyStore() {
   // Any number of views can emit actions/events without knowing the specifics of the back-end.
   // This store can easily be swapped for another, while the view components remain untouched.
 
-  self.on('app_init', function(family) {
-    console.warn('FamilyStore::app_init');
+  self.on('family_init', function(family, fake_loading) {
+    console.warn('FamilyStore::family_init', self, this);
     // var cache = JSON.parse(localStorage.getItem('app_cache')) ;
     var cache = false;
     if (family) self.family=family;
-    self.trigger('app_ready', cache || self.family);
+    
+    if (!fake_loading) {
+      console.warn('FamilyStore::-->family_changed', self, this);
+      return self.trigger('family_changed', cache || self.family);
+    }
+    
+    let loading = fake_loading;
+    self.intervalId = setInterval(function() {
+        loading--;
+        console.log('fake_loading', loading);
+        if (loading<=0) {
+          clearInterval(self.intervalId);
+          return self.trigger('family_changed', cache || self.family);
+        }
+        console.log('send--->family_fake_loading');
+        self.trigger('family_fake_loading', loading);
+    }, 1000); // just to see loading in action
   })
-  
+  self.on('family_unmount', function() {
+    console.warn('FamilyStore::family_unmount');
+    clearInterval(self.intervalId);
+  })
   self.on('mother_update', function(newMother) {
     console.warn('FamilyStore::mother_update', self.family, newMother);
     self.family.mother=newMother;

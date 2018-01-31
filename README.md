@@ -55,7 +55,7 @@ A production minified version created at ./public folder
 
 ### SimpleHTTPServer :
 ```
-cd public/ && python -m SimpleHTTPServer 8080
+cd public/ && python -m SimpleHTTPServer 3000
 ```
 
 
