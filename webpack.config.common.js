@@ -60,7 +60,7 @@ module.exports = {
         loader: 'file-loader',
         options: {
           // useRelativePath: true,
-          publicPath: '/',
+          publicPath: '/fonts/',
           outputPath: 'fonts/'
         }
       }]
