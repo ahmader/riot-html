@@ -4,7 +4,7 @@ const defaultSettings = {
 };
 
 const mainInfo = {
-  info: 'main Info'
+  info: 'main Info',
 };
 
-export {defaultSettings, mainInfo}
+export { defaultSettings, mainInfo };

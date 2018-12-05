@@ -1,0 +1,17 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+      "browser": true,
+      "node": true,
+      "es6": true,
+  },
+  "globals": {
+      "riot": true,
+      "APPVERSION": true,
+  },
+  "extends": ["airbnb"],
+  "rules": {
+    "import/no-unresolved": [2, { "ignore": ["\/~*"] }],
+    "no-console": ["off", { allow: ["info","log"] }],
+  },
+}
