@@ -81,6 +81,11 @@
       // familyStore.trigger('children_changed', newFamily);
       self.update();
     });
+		self.store.on('family_fakeLoading', (loading) => {
+	    console.warn('family_fakeLoading', loading);
+	    self.loading = loading;
+			self.update();
+	  });
     
     self.store.on('mother_changed', (newFamily) => {
       // console.log('family.tag>>>>>mother_changed', self.family.mother, newFamily.mother);
