@@ -8,7 +8,7 @@
     console.warn('app-root:start');
     self.on('mount', () => {
       console.log('app-root:::mount');
-      route.start(true);
+      riot.route.start(true);
       // route.exec();
     });
     self.on('unmount', () => {
@@ -68,8 +68,7 @@
       }
       routes.push(l.url);
     })
-    console.log(routes);
-    var r = route.create()
+    var r = riot.route.create()
     r(highlightCurrent)
     function highlightCurrent(menuId, subMenu){
       if (!menuId) menuId='home';
